@@ -1,0 +1,146 @@
+1.菲尼尔灯   
+右基准灯最左侧的灯 前面两个圆环去掉
+
+左右基准灯  最左右的灯包围你好
+
+ICD 定义,中线相机摇头角度限制编写
+
+检查结构体数据变化进行传输
+
+菲涅尔灯 升降需要单独控制
+
+
+using UnityEngine;
+
+public class RotationController : MonoBehaviour
+{
+    public Transform target; // 待旋转的物体
+    public float rotationSpeed = 10f; // 旋转速度
+    public float maxRotationAngle = 30f; // 最大旋转角度
+
+    private bool rotatingLeft, rotatingRight, rotatingUp, rotatingDown;
+    private Quaternion initialRotation;
+
+    void Start()
+    {
+        initialRotation = target.localRotation;//初始位置
+    }
+
+    void Update()
+    {
+        if (rotatingLeft)
+            RotateLeft();
+        if (rotatingRight)
+            RotateRight();
+        if (rotatingUp)
+            RotateUp();
+        if (rotatingDown)
+            RotateDown();
+    }
+
+    private void RotateLeft()
+    {
+        Rotate(Vector3.up);
+    }
+
+    private void RotateRight()
+    {
+        Rotate(Vector3.down);
+    }
+
+    private void RotateUp()
+    {
+        Rotate(Vector3.right);
+    }
+
+    private void RotateDown()
+    {
+        Rotate(Vector3.left);
+    }
+
+    private void Rotate(Vector3 axis)
+    {
+        Quaternion newRotation = target.localRotation * Quaternion.Euler(axis * rotationSpeed * Time.deltaTime);
+        float angle = Quaternion.Angle(initialRotation, newRotation);
+
+        if (angle <= maxRotationAngle)
+            target.localRotation = newRotation;
+    }
+
+    public void OnButtonLeftDown()
+    {
+        rotatingLeft = true;
+    }
+
+    public void OnButtonLeftUp()
+    {
+        rotatingLeft = false;
+    }
+
+    public void OnButtonRightDown()
+    {
+        rotatingRight = true;
+    }
+
+    public void OnButtonRightUp()
+    {
+        rotatingRight = false;
+    }
+
+    public void OnButtonUpDown()
+    {
+        rotatingUp = true;
+    }
+
+    public void OnButtonUpUp()
+    {
+        rotatingUp = false;
+    }
+
+    public void OnButtonDownDown()
+    {
+        rotatingDown = true;
+    }
+
+    public void OnButtonUpDown()
+    {
+        rotatingDown = false;
+    }
+}
+```
+
+在Unity中，创建四个按钮，并为每个按钮分别创建两个事件处理函数（按下事件和抬起事件）。将每个按钮的按下事件分别绑定到 `OnButtonLeftDown`、`OnButtonRightDown`、`OnButtonUpDown`、`OnButtonDownDown` 函数，然后将抬起事件绑定到 `OnButtonLeftUp`、`OnButtonRightUp`、`OnButtonUpUp`、`OnButtonDownUp` 函数。
+
+最后，在Unity中将待旋转的物体指派给旋转控制脚本的 `target` 变量，设置合适的 `rotationSpeed` 和 `maxRotationAngle` 值。运行游戏后，当按住按钮时，物体将围绕自身中心点进行旋转，并且角度将受到限制。
+
+请注意，这只是一个基本的示例，你可以根据自己的需求进行修改和扩展。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
